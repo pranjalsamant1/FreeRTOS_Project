@@ -1,7 +1,5 @@
 # FreeRTOS Real-Time Embedded Systems Project
 
-**Multi-Task Machine Monitoring & Control System (ESP32)**
-
 ---
 
 ## 1. Project Overview
@@ -18,8 +16,6 @@ It demonstrates:
 * Analog & digital signal processing
 * Frequency measurement of external signals
 * Human–machine interaction via pushbutton events
-
-The design models a simplified **industrial machine monitoring and control node**.
 
 ---
 
