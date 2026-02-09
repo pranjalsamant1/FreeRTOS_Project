@@ -4,9 +4,9 @@
 
 ## 1. Project Overview
 
-This project implements a **multi-task real-time embedded system** on the ESP32 using **FreeRTOS**.
+* This project implements a **multi-task real-time embedded system** on the ESP32 using **FreeRTOS**.
 
-The system performs monitoring, signal processing, waveform generation, and event-driven control.
+* The system performs monitoring, signal processing, waveform generation, and event-driven control.
 
 Key things It demonstrates:
 
