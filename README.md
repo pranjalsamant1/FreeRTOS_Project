@@ -24,14 +24,12 @@ Key things It demonstrates:
 
 **Period:** 4 ms
 
-Generates a deterministic digital pulse sequence:
+Generates digital pulse sequence:
 
 * 200 µs HIGH
 * 50 µs LOW
 * 30 µs HIGH
 * Remainder LOW
-
-Demonstrates precise microsecond-scale timing within an RTOS task.
 
 ---
 
@@ -40,7 +38,6 @@ Demonstrates precise microsecond-scale timing within an RTOS task.
 **Period:** 20 ms
 
 * Measures frequency of external square wave.
-* Uses rising-edge period measurement.
 * Stores result in shared struct.
 
 ---
@@ -49,7 +46,7 @@ Demonstrates precise microsecond-scale timing within an RTOS task.
 
 **Period:** 8 ms
 
-Same method as Task 2 but operates at a higher sampling rate for a different input range.
+Same method as Task 2.
 
 ---
 
@@ -59,10 +56,7 @@ Same method as Task 2 but operates at a higher sampling rate for a different inp
 
 * Reads potentiometer via ADC.
 * Maintains 4-sample moving average filter.
-* Compares against half-scale threshold.
-* Drives LED indicator.
-
-Implements simple real-time signal filtering.
+* If avarage > halfscale LED turns on.
 
 ---
 
@@ -70,11 +64,9 @@ Implements simple real-time signal filtering.
 
 **Period:** 100 ms
 
-* Reads both measured frequencies.
+* Reads both measured frequencies from task 2, and task 3.
 * Scales values to 0–99 range.
 * Outputs formatted data via UART (9600 baud).
-
-Represents telemetry/diagnostic reporting.
 
 ---
 
@@ -83,8 +75,6 @@ Represents telemetry/diagnostic reporting.
 **Period:** 20 ms polling
 
 * Reads pushbutton input.
-* Implements software debounce.
-* Detects press events.
 * Sends event messages to queue.
 
 ---
@@ -93,8 +83,6 @@ Represents telemetry/diagnostic reporting.
 
 * Blocks on button event queue.
 * Toggles LED on each received event.
-
-Demonstrates event-driven RTOS design with no polling CPU load.
 
 ---
 
@@ -115,7 +103,7 @@ Stores latest measured frequencies.
 
 ### Mutex Protection
 
-A FreeRTOS mutex ensures safe concurrent access:
+A FreeRTOS mutex ensures safe access between below tasks:
 
 * Writers: Task 2 & Task 3
 * Reader: Task 5
@@ -132,8 +120,6 @@ A FreeRTOS queue connects Tasks 6 → 7:
 * Consumer: LED controller
 * Event type: Button press notification
 
-Enables asynchronous event handling.
-
 ---
 
 ## 6. Scheduling Strategy
@@ -143,8 +129,6 @@ Each periodic task uses:
 ```c
 vTaskDelay(pdMS_TO_TICKS(period_ms));
 ```
-
-This creates cooperative periodic execution while allowing preemption by higher-priority tasks.
 
 Task priorities are assigned based on timing criticality:
 
@@ -176,14 +160,6 @@ Task priorities are assigned based on timing criticality:
 * Interrupt-based frequency capture
 
 ---
-
-## 11. Learning Outcomes
-
-This project demonstrates practical experience in:
-
-* Real-time embedded firmware design
-* Hardware–software integration
-* Event-driven system architecture
 
 ---
 ## 2. Hardware Platform
