@@ -6,40 +6,15 @@
 
 This project implements a **multi-task real-time embedded system** on the ESP32 using **FreeRTOS**.
 
-The system performs concurrent monitoring, signal processing, waveform generation, and event-driven control across multiple hardware interfaces.
+The system performs monitoring, signal processing, waveform generation, and event-driven control.
 
-It demonstrates:
+Key things It demonstrates:
 
-* Periodic real-time task scheduling
+* Real-time task scheduling
 * Inter-task communication using queues
 * Shared data protection using mutexes
-* Analog & digital signal processing
-* Frequency measurement of external signals
 * Human–machine interaction via pushbutton events
 
----
-
-## 2. Hardware Platform
-
-* **MCU:** ESP32
-* **RTOS:** FreeRTOS (Arduino framework integration)
-* **Interfaces used:**
-
-  * GPIO (digital I/O)
-  * ADC
-  * UART (Serial logging)
-
-### I/O Mapping
-
-| Function            | GPIO    |
-| ------------------- | ------- |
-| Waveform Output LED | GPIO 4  |
-| Frequency Input #1  | GPIO 14 |
-| Frequency Input #2  | GPIO 25 |
-| Threshold LED       | GPIO 2  |
-| Potentiometer (ADC) | GPIO 15 |
-| Pushbutton Input    | GPIO 27 |
-| Event LED Output    | GPIO 26 |
 
 ---
 
@@ -183,38 +158,16 @@ Task priorities are assigned based on timing criticality:
 
 ### Frequency Measurement
 
-* Rising-to-rising edge timing
-* Microsecond resolution using `micros()`
-* Timeout protection for signal loss
+* Calculated time between two edges
+* Used micros() for microsecond timing
+* Added timeout if signal is missing
 
 ### Analog Filtering
 
-* 4-sample moving average
-* Reduces noise and ADC jitter
-* Lightweight FIR filter implementation
-
----
-
-## 8. Key RTOS Concepts Demonstrated
-
-* Task creation & core pinning
-* Periodic scheduling
-* Mutex synchronization
-* Queue-based messaging
-* Blocking vs polling design
-* Real-time timing control
-
----
-
-## 9. Example Serial Output
-
-```
-34, 52
-35, 51
-33, 50
-```
-
-Represents scaled frequency measurements from both channels.
+* Read potentiometer using ADC
+* Took average of last 4 readings
+* Helped reduce noise and fluctuations
+* Compared average with threshold to control LED
 
 ---
 
@@ -230,11 +183,35 @@ This project demonstrates practical experience in:
 
 * Real-time embedded firmware design
 * Hardware–software integration
-* Deterministic scheduling
-* Concurrency management
 * Event-driven system architecture
 
 ---
+## 2. Hardware Platform
+
+* **MCU:** ESP32
+* **RTOS:** FreeRTOS (Arduino framework integration)
+* **Interfaces used:**
+
+  * GPIO (digital I/O)
+  * ADC
+  * UART (Serial logging)
+
+---
+
+### I/O Mapping
+
+| Function            | GPIO    |
+| ------------------- | ------- |
+| Waveform Output LED | GPIO 4  |
+| Frequency Input #1  | GPIO 14 |
+| Frequency Input #2  | GPIO 25 |
+| Threshold LED       | GPIO 2  |
+| Potentiometer (ADC) | GPIO 15 |
+| Pushbutton Input    | GPIO 27 |
+| Event LED Output    | GPIO 26 |
+
+---
+
 
 **Author:** Pranjal Samant
 Embedded Software / Robotics Systems Engineer
