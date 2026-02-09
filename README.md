@@ -43,34 +43,6 @@ It demonstrates:
 
 ---
 
-## 3. System Architecture
-
-The system is decomposed into **seven concurrent FreeRTOS tasks**, grouped into functional subsystems:
-
-### A) Signal Generation
-
-* Generates a deterministic pulse waveform.
-
-### B) Signal Measurement & Processing
-
-* Measures frequencies of two external square waves.
-* Stores results in shared memory.
-* Scales and logs processed values.
-
-### C) Analog Monitoring
-
-* Samples potentiometer input.
-* Applies moving average filtering.
-* Drives threshold indicator.
-
-### D) Event-Driven Human Interface
-
-* Detects pushbutton presses.
-* Sends events via queue.
-* Toggles LED on each event.
-
----
-
 ## 4. Task Breakdown
 
 ### Task 1 — Waveform Generator
