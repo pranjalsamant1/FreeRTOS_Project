@@ -249,10 +249,6 @@ Represents scaled frequency measurements from both channels.
 ## 10. Potential Extensions
 
 * Interrupt-based frequency capture
-* DMA ADC sampling
-* CAN/UART telemetry expansion
-* Fault detection & watchdog integration
-* AUTOSAR-style layered architecture
 
 ---
 
