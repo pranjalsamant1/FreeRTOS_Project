@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-// ---------------------- PINS ----------------------
+// Define correct pins here.
 #define LED_T1_PIN        4
 #define FREQ_IN_T2_PIN    14
 #define FREQ_IN_T3_PIN    25
@@ -9,7 +9,8 @@
 #define SWITCH_T6_PIN     27
 #define LED_T6_PIN        26
 
-// ---------------------- RTOS SHARED DATA -----------------------
+// Data for RTOS (Shared)
+
 typedef struct {
   float freq_t2_hz;
   float freq_t3_hz;
@@ -20,7 +21,7 @@ static SemaphoreHandle_t gFreqMutex = nullptr;
 
 static QueueHandle_t gBtnQueue = nullptr;
 
-// ---------------------- HELPERS ----------------------
+// Debug Helpers
 static bool waitLevelTimeout(uint8_t pin, uint8_t level, uint32_t timeout_us) {
   const uint32_t t0 = micros();
   while (digitalRead(pin) != level) {
@@ -31,7 +32,6 @@ static bool waitLevelTimeout(uint8_t pin, uint8_t level, uint32_t timeout_us) {
 }
 
 static float measureFreqRisingToRising(uint8_t pin, uint32_t timeout_us) {
-  // Ensure we see a clean rising edge, then measure to the next rising edge.
   if (!waitLevelTimeout(pin, LOW, timeout_us))  return 0.0f;
   if (!waitLevelTimeout(pin, HIGH, timeout_us)) return 0.0f;
 
@@ -47,7 +47,7 @@ static float measureFreqRisingToRising(uint8_t pin, uint32_t timeout_us) {
   return 1000000.0f / (float)dt;
 }
 
-// ---------------------- TASK 1 ----------------------
+// Task1
 void task1(void *pvParameters) {
   (void)pvParameters;
 
@@ -67,12 +67,12 @@ void task1(void *pvParameters) {
   }
 }
 
-// ---------------------- TASK 2 ----------------------
+// Task2
 void task2(void *pvParameters) {
   (void)pvParameters;
 
   while (1) {
-    const float f = measureFreqRisingToRising(FREQ_IN_T2_PIN, 50000); // 50ms timeout
+    const float f = measureFreqRisingToRising(FREQ_IN_T2_PIN, 50000);
 
     xSemaphoreTake(gFreqMutex, portMAX_DELAY);
     gFreqs.freq_t2_hz = f;
@@ -82,12 +82,12 @@ void task2(void *pvParameters) {
   }
 }
 
-// ---------------------- TASK 3 ----------------------
+// Task3
 void task3(void *pvParameters) {
   (void)pvParameters;
 
   while (1) {
-    const float f = measureFreqRisingToRising(FREQ_IN_T3_PIN, 50000); // 50ms timeout
+    const float f = measureFreqRisingToRising(FREQ_IN_T3_PIN, 50000);
 
     xSemaphoreTake(gFreqMutex, portMAX_DELAY);
     gFreqs.freq_t3_hz = f;
@@ -97,7 +97,7 @@ void task3(void *pvParameters) {
   }
 }
 
-// ---------------------- TASK 4 ----------------------
+// Task4
 void task4(void *pvParameters) {
   (void)pvParameters;
 
@@ -117,7 +117,7 @@ void task4(void *pvParameters) {
   }
 }
 
-// ---------------------- TASK 5 ----------------------
+// Task5
 void task5(void *pvParameters) {
   (void)pvParameters;
 
@@ -129,7 +129,7 @@ void task5(void *pvParameters) {
     f3 = gFreqs.freq_t3_hz;
     xSemaphoreGive(gFreqMutex);
 
-    // Map to 0..99 using your stated ranges
+    
     float s2 = ((f2 - 333.0f) * 99.0f) / (1000.0f - 333.0f);
     float s3 = ((f3 - 500.0f) * 99.0f) / (1000.0f - 500.0f);
 
@@ -145,7 +145,7 @@ void task5(void *pvParameters) {
   }
 }
 
-// ---------------------- TASK 6 ----------------------
+// Task6
 void task6(void *parameter) {
   (void)parameter;
 
@@ -171,7 +171,7 @@ void task6(void *parameter) {
   }
 }
 
-// ---------------------- TASK 7 ----------------------
+// Task7
 void task7(void *parameter) {
   (void)parameter;
 
@@ -186,7 +186,7 @@ void task7(void *parameter) {
   }
 }
 
-// ---------------------- SETUP / LOOP ----------------------
+// Steup and loop below.
 void setup() {
   Serial.begin(9600);
 
